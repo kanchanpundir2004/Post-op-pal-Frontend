@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '../../utils/cn'
-import { ChevronDown } from 'lucide-react'
 
 interface DropdownItem {
   label: string
