@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { Card, CardContent, CardHeader, CardTitle } from '../common/Card'
+import { Card, CardContent } from '../common/Card' // Removed CardHeader, CardTitle imports
 import { Button } from '../common/Button'
 import { Input } from '../common/Input'
 import { Badge } from '../common/Badge'
@@ -15,14 +15,10 @@ import {
   Edit,
   Trash2,
   Shield,
-  Mail,
-  Phone,
-  Calendar,
-  Check,
-  X,
-  Eye,
   UserCheck,
-  UserX
+  UserX,
+  Save,
+  AlertTriangle // Added missing imports
 } from 'lucide-react'
 import { formatDate } from '../../utils/formatDate'
 import toast from 'react-hot-toast'
@@ -201,10 +197,11 @@ const UserManagement: React.FC = () => {
     }
   }
 
-  const getStatusColor = (status: User['status']) => {
+  // Fixed: Use 'destructive' instead of 'danger'
+  const getStatusColor = (status: User['status']): 'success' | 'destructive' | 'warning' | 'secondary' => {
     switch (status) {
       case 'active': return 'success'
-      case 'inactive': return 'danger'
+      case 'inactive': return 'destructive'
       case 'pending': return 'warning'
       default: return 'secondary'
     }
