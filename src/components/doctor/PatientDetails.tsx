@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { patientService } from '../../services/patient.service'
@@ -28,9 +28,6 @@ import {
   Camera,
   TrendingUp,
   Heart,
-  Thermometer,
-  Scale,
-  Clock,
   Stethoscope,
   Clipboard,
   FileUp
@@ -63,7 +60,7 @@ const PatientDetails: React.FC = () => {
   )
 
   // Fetch patient alerts
-  const { data: alerts, isLoading: alertsLoading } = useQuery(
+  const { data: alerts } = useQuery(  // Removed unused alertsLoading
     ['alerts', id],
     () => patientService.getAlerts(id!),
     { enabled: !!id }
@@ -444,11 +441,11 @@ const PatientDetails: React.FC = () => {
                               </div>
                             )}
                           </div>
-                          {checkIn.symptoms.length > 0 && (
+                          {checkIn.symptoms && checkIn.symptoms.length > 0 && (
                             <div>
                               <p className="text-sm text-gray-600">Symptoms</p>
                               <div className="flex flex-wrap gap-1 mt-1">
-                                {checkIn.symptoms.map((symptom, index) => (
+                                {checkIn.symptoms.map((symptom: string, index: number) => (
                                   <Badge key={index} variant="outline">
                                     {symptom}
                                   </Badge>
@@ -631,8 +628,8 @@ const PatientDetails: React.FC = () => {
               <CardContent>
                 <div className="space-y-3">
                   {alerts
-                    .filter((alert) => !alert.resolved)
-                    .map((alert) => (
+                    .filter((alert: any) => !alert.resolved)
+                    .map((alert: any) => (
                       <div
                         key={alert.id}
                         className="p-3 bg-red-50 border border-red-200 rounded-lg"
@@ -667,7 +664,7 @@ const PatientDetails: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-600">Allergies</p>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {patient.allergies.map((allergy, index) => (
+                    {patient.allergies.map((allergy: string, index: number) => (
                       <Badge key={index} variant="destructive">
                         {allergy}
                       </Badge>
@@ -679,7 +676,7 @@ const PatientDetails: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-600">Comorbidities</p>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {patient.comorbidities.map((condition, index) => (
+                    {patient.comorbidities.map((condition: string, index: number) => (
                       <Badge key={index} variant="outline">
                         {condition}
                       </Badge>
