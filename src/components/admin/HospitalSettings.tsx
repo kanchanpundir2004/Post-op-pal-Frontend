@@ -2,15 +2,10 @@ import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../common/Card'
 import { Button } from '../common/Button'
 import { Input } from '../common/Input'
-import { Textarea } from '../common/Textarea'
 import { Badge } from '../common/Badge'
 import { Tabs } from '../common/Tabs'
 import {
   Building2,
-  MapPin,
-  Phone,
-  Mail,
-  Globe,
   Settings,
   Shield,
   Bell,
@@ -19,9 +14,9 @@ import {
   Download,
   Save,
   RefreshCw,
-  Check,
   AlertTriangle
 } from 'lucide-react'
+
 import toast from 'react-hot-toast'
 
 const HospitalSettings: React.FC = () => {
