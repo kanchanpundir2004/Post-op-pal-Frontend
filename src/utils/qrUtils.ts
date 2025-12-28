@@ -250,15 +250,16 @@ export class QRUtils {
   }
 
   // Create QR code with logo
-  static async generateQRWithLogo(
-    data: string | object,
-    logoUrl: string
-  ): Promise<string> {
-    // This would require a more complex implementation with canvas
-    // For now, we'll return a regular QR code
-    console.warn('QR code with logo feature requires additional implementation')
-    return this.generateQRCode(data)
-  }
+  // Remove the logoUrl parameter
+static async generateQRWithLogo(
+  data: string | object,
+  // logoUrl: string // Remove this unused parameter
+): Promise<string> {
+  // This would require a more complex implementation with canvas
+  // For now, we'll return a regular QR code
+  console.warn('QR code with logo feature requires additional implementation')
+  return this.generateQRCode(data)
+}
 
   // Calculate QR code size based on data length
   static calculateOptimalSize(data: string): number {

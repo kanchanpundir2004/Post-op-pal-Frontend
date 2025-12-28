@@ -10,9 +10,28 @@ import {
   HelpCircle,
   User,
   ChevronDown,
-  Menu,
-} from 'lucide-react'
-import { Dropdown } from '../common/Dropdown'
+  Settings,
+  LogOut
+} from 'lucide-react' // Removed unused Menu import
+import Dropdown from '../common/Dropdown'
+
+interface DropdownItem {
+  label: string
+  icon: React.ReactNode
+  onClick: () => void
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'success' | 'warning' | 'info'
+  type?: never
+}
+
+interface DropdownDivider {
+  type: 'divider'
+  label?: never
+  icon?: never
+  onClick?: never
+  variant?: never
+}
+
+type DropdownMenuItem = DropdownItem | DropdownDivider
 
 const Navbar: React.FC = () => {
   const { user, logout } = useAuth()
@@ -27,27 +46,27 @@ const Navbar: React.FC = () => {
     }
   }
 
-  const userMenuItems = [
-    {
-      label: 'Profile',
-      icon: <User className="h-4 w-4" />,
-      onClick: () => navigate('/profile'),
-    },
-    {
-      label: 'Settings',
-      icon: <User className="h-4 w-4" />,
-      onClick: () => navigate('/settings'),
-    },
-    {
-      type: 'divider' as const,
-    },
-    {
-      label: 'Logout',
-      icon: <User className="h-4 w-4" />,
-      onClick: logout,
-      variant: 'danger' as const,
-    },
-  ]
+  const userMenuItems: DropdownMenuItem[] = [
+  {
+    label: 'Profile',
+    icon: <User className="h-4 w-4" />,
+    onClick: () => navigate('/profile'),
+  },
+  {
+    label: 'Settings',
+    icon: <Settings className="h-4 w-4" />,
+    onClick: () => navigate('/settings'),
+  },
+  {
+    type: 'divider',
+  },
+  {
+    label: 'Logout',
+    icon: <LogOut className="h-4 w-4" />,
+    onClick: logout,
+    variant: 'destructive' as const, // Make sure this is 'danger' not 'destructive'
+  },
+]
 
   return (
     <header className="sticky top-0 z-30 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">

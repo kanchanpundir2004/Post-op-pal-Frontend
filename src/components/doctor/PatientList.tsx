@@ -38,7 +38,7 @@ const PatientList: React.FC = () => {
       case 'attention':
         return <Badge variant="warning">Attention</Badge>
       case 'critical':
-        return <Badge variant="danger">Critical</Badge>
+        return <Badge variant="destructive">Critical</Badge>
       default:
         return <Badge variant="outline">Unknown</Badge>
     }

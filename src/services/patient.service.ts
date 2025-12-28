@@ -1,4 +1,3 @@
-import api from './api'
 import type { Patient, DailyCheckIn, CarePlan } from '../types/patient.types'
 
 export const patientService = {
@@ -25,6 +24,8 @@ export const patientService = {
             admissionDate: '2024-01-14',
             dischargeDate: '2024-01-16',
             notes: 'Patient is recovering well. No complications.',
+            createdAt: '2024-01-14T10:00:00Z', // Added
+            updatedAt: '2024-01-20T15:30:00Z', // Added
           },
           {
             id: '2',
@@ -43,6 +44,8 @@ export const patientService = {
             admissionDate: '2024-01-17',
             dischargeDate: '2024-01-19',
             notes: 'Experiencing mild discomfort. Monitoring required.',
+            createdAt: '2024-01-17T11:30:00Z', // Added
+            updatedAt: '2024-01-19T09:15:00Z', // Added
           },
           {
             id: '3',
@@ -61,6 +64,8 @@ export const patientService = {
             admissionDate: '2024-01-09',
             dischargeDate: '2024-01-12',
             notes: 'Red flag: High fever reported. Immediate attention needed.',
+            createdAt: '2024-01-09T14:20:00Z', // Added
+            updatedAt: '2024-01-20T22:45:00Z', // Added
           },
         ]
         resolve(patients)

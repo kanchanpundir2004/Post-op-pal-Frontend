@@ -1,4 +1,4 @@
-import api from './api'
+
 import type { Patient, DailyCheckIn, CarePlan } from '../types/patient.types'
 
 export interface DoctorSchedule {

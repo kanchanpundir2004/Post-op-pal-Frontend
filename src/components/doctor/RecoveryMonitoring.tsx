@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '../common/Card'
 import { Button } from '../common/Button'
 import { Input } from '../common/Input'
 import { Textarea } from '../common/Textarea'
 import { Badge } from '../common/Badge'
 import { Modal } from '../common/Modal'
-import { Loader } from '../common/Loader'
 import { Tabs } from '../common/Tabs'
 import {
   Activity,
@@ -19,11 +17,9 @@ import {
   Calendar,
   AlertTriangle,
   CheckCircle,
-  XCircle,
   Plus,
   Download,
   Filter,
-  Eye,
   Edit,
   Save,
   LineChart,
@@ -31,13 +27,10 @@ import {
   Target,
   ActivitySquare,
   Weight,
-  Stethoscope,
   Pill,
   Dumbbell,
-  Moon
 } from 'lucide-react'
 import { formatDate } from '../../utils/formatDate'
-import { patientService } from '../../services/patient.service'
 import toast from 'react-hot-toast'
 
 interface VitalSigns {
@@ -72,11 +65,9 @@ interface RecoveryMilestone {
 
 const RecoveryMonitoring: React.FC = () => {
   const { id } = useParams<{ id: string }>()
-  const queryClient = useQueryClient()
   const [activeTab, setActiveTab] = useState('vitals')
   const [showAddVitalsModal, setShowAddVitalsModal] = useState(false)
   const [showAddMilestoneModal, setShowAddMilestoneModal] = useState(false)
-  const [selectedVital, setSelectedVital] = useState<VitalSigns | null>(null)
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d')
 
   // Mock vital signs data
@@ -458,14 +449,14 @@ const RecoveryMonitoring: React.FC = () => {
                         <span className="text-gray-600">No change</span>
                       )}
                     </div>
-                    <Badge variant={stats.temperature.status === 'normal' ? 'success' : 'danger'} className="mt-2">
+                    <Badge variant={stats.temperature.status === 'normal' ? 'success' : 'destructive'} className="mt-2">
                       {stats.temperature.status.toUpperCase()}
                     </Badge>
                   </div>
 
                   <div className="p-4 border rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
-                      <Pulse className="h-5 w-5 text-red-500" />
+                      <Activity className="h-5 w-5 text-red-500" />
                       <span className="font-medium">Blood Pressure</span>
                     </div>
                     <div className="text-2xl font-bold mb-1">
@@ -475,7 +466,7 @@ const RecoveryMonitoring: React.FC = () => {
                       {stats.bloodPressure.trend.systolic > 0 ? '↑' : '↓'} {Math.abs(stats.bloodPressure.trend.systolic)}/
                       {stats.bloodPressure.trend.diastolic > 0 ? '↑' : '↓'} {Math.abs(stats.bloodPressure.trend.diastolic)}
                     </div>
-                    <Badge variant={stats.bloodPressure.status === 'normal' ? 'success' : 'danger'} className="mt-2">
+                    <Badge variant={stats.bloodPressure.status === 'normal' ? 'success' : 'destructive'} className="mt-2">
                       {stats.bloodPressure.status.toUpperCase()}
                     </Badge>
                   </div>
@@ -556,7 +547,7 @@ const RecoveryMonitoring: React.FC = () => {
                           <span>{vital.time}</span>
                         </div>
                         {getVitalStatus(vital) === 'critical' && (
-                          <Badge variant="danger">
+                          <Badge variant="destructive">
                             <AlertTriangle className="h-3 w-3 mr-1" />
                             Critical
                           </Badge>

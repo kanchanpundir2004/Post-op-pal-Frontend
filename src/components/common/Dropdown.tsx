@@ -1,88 +1,76 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { cn } from '../../utils/cn'
+import React from 'react'
 
-interface DropdownItem {
+// Allow both 'danger' and 'destructive' variants
+export interface DropdownItem {
   label: string
   icon?: React.ReactNode
-  onClick?: () => void
-  href?: string
-  type?: 'item' | 'divider'
-  variant?: 'default' | 'danger'
+  onClick: () => void
+  variant?: 'default' | 'danger' | 'destructive' | 'warning' | 'outline' | 'secondary' | 'success' | 'info'
+  type?: never
 }
+
+export interface DropdownDivider {
+  type: 'divider'
+  label?: never
+  icon?: never
+  onClick?: never
+  variant?: never
+}
+
+export type DropdownMenuItem = DropdownItem | DropdownDivider
 
 interface DropdownProps {
   trigger: React.ReactNode
-  items: DropdownItem[]
+  items: DropdownMenuItem[]
   align?: 'left' | 'right'
   className?: string
 }
 
-const Dropdown: React.FC<DropdownProps> = ({
-  trigger,
-  items,
-  align = 'right',
-  className,
-}) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  const handleItemClick = (item: DropdownItem) => {
-    if (item.onClick) {
-      item.onClick()
-    }
-    setIsOpen(false)
-  }
+const Dropdown: React.FC<DropdownProps> = ({ trigger, items, align = 'right', className }) => {
+  const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative">
+      {/* Trigger */}
       <div onClick={() => setIsOpen(!isOpen)}>
         {trigger}
       </div>
 
+      {/* Dropdown menu */}
       {isOpen && (
-        <div
-          className={cn(
-            'absolute mt-2 min-w-[200px] rounded-md border bg-white shadow-lg z-50',
-            align === 'right' ? 'right-0' : 'left-0',
-            className
-          )}
-        >
+        <div className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 ${className}`}>
           <div className="py-1">
-            {items.map((item, index) => (
-              <React.Fragment key={index}>
-                {item.type === 'divider' ? (
-                  <div className="my-1 border-t" />
-                ) : (
-                  <a
-                    href={item.href}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleItemClick(item)
-                    }}
-                    className={cn(
-                      'flex items-center gap-2 px-4 py-2 text-sm transition-colors cursor-pointer',
-                      item.variant === 'danger'
-                        ? 'text-red-600 hover:bg-red-50'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    )}
-                  >
-                    {item.icon && <span>{item.icon}</span>}
-                    {item.label}
-                  </a>
-                )}
-              </React.Fragment>
-            ))}
+            {items.map((item, index) => {
+              if ('type' in item && item.type === 'divider') {
+                return <div key={`divider-${index}`} className="border-t my-1" />
+              }
+
+              const menuItem = item as DropdownItem
+              // Map 'destructive' to 'danger' for styling
+              const variant = menuItem.variant === 'destructive' ? 'danger' : menuItem.variant
+              
+              return (
+                <button
+                  key={`item-${index}`}
+                  onClick={() => {
+                    menuItem.onClick()
+                    setIsOpen(false)
+                  }}
+                  className={`
+                    w-full text-left px-4 py-2 text-sm
+                    ${variant === 'danger' ? 'text-red-700 hover:bg-red-50' : 
+                      variant === 'warning' ? 'text-yellow-700 hover:bg-yellow-50' :
+                      variant === 'success' ? 'text-green-700 hover:bg-green-50' :
+                      'text-gray-700 hover:bg-gray-100'
+                    }
+                    flex items-center gap-2
+                  `}
+                >
+                  {menuItem.icon}
+                  <span>{menuItem.label}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
       )}
@@ -90,4 +78,4 @@ const Dropdown: React.FC<DropdownProps> = ({
   )
 }
 
-export { Dropdown }
+export default Dropdown
